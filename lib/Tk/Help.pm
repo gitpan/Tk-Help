@@ -1,7 +1,7 @@
 package Tk::Help;
 
 use vars qw($VERSION);
-$VERSION = "0.1";
+$VERSION = "0.2";
 
 use Tk qw(Ev);
 use Tk::widgets qw(HList ROText Tree);
@@ -192,114 +192,113 @@ the array with their help content.
 
 =over 4
 
-=item -detailsbackground
+=item B<-detailsbackground>
 
 Sets the background color of the details section (right side) of the
-help window.  The default is white.
+help window.  Default is C<white>.
 
-=item -detailsborderwidth
+=item B<-detailsborderwidth>
 
 Sets the borderwidth around the inside of the details section (right
-side) of the help window.  The default is 10.
+side) of the help window.  Default is C<10>.
 
-=item -detailsfontsize
+=item B<-detailsfontsize>
 
 Sets the font size of the details text.  This is separate from the
-header text that appears in each detail window.  The default is 8.
+header text that appears in each detail window.  Default is C<8>.
 
-=item -detailsforeground
+=item B<-detailsforeground>
 
 Sets the color of the details text.  This is separate from the header
-color that appears in each detail window.  The default is set to the
-OS's default text color for Windows and black otherwise.
+color that appears in each detail window.  Default is the OS's
+default text color for Windows and C<black> otherwise.
 
-=item -detailsheaderfontsize
+=item B<-detailsheaderfontsize>
 
 Sets the font size of the headers in the details window above the
-text.  This is separate from the details text.  The default is 9.
+text.  This is separate from the details text.  Default is C<9>.
 
-=item -detailsheaderforeground
+=item B<-detailsheaderforeground>
 
 Sets the color of the headers in the details window above the text.
-This is separate from the details text.  The default is set to the
-OS's default text color for Windows and black otherwise.
+This is separate from the details text.  Default is the OS's default
+text color for Windows and C<black> otherwise.
 
-=item -detailsmenu
+=item B<-detailsmenu>
 
 Determines if the right-click menu is active for the details section.
-Takes a boolean value.  The default is set to 0.
+Takes a boolean value.  Default is C<0>.
 
-=item -detailswidth
+=item B<-detailswidth>
 
-Sets the width of the details section.  The default is set to 40.
+Sets the width of the details section.  Default is C<40>.
 
-=item -height
+=item B<-height>
 
-Sets the height for the help window.  Default is set to 30 for
-Windows and 40 otherwise.
+Sets the height for the help window.  Default is C<30> for Windows
+and C<40> otherwise.
 
-=item -icon
+=item B<-icon>
 
 Sets the icon on the title bar of the application.  This must be
-passed as a reference.  The default is set to the red 'Tk' icon for
+passed as a reference.  Default is the red 'Tk' icon for
 Windows and the system default otherwise.
 
-=item -listbackground
+=item B<-listbackground>
 
 Sets the background color of the list section (left side) of the
-help window.  The default is set to the OS's default application
-color (Tk::NORMAL_BG).
+help window.  Default is the OS's default application color,
+C<(Tk::NORMAL_BG)>.
 
-=item -listborderwidth
+=item B<-listborderwidth>
 
 Sets the borderwidth around the inside of the list section (left
-side) of the help window.  The default is set to 0.
+side) of the help window.  Default is C<0>.
 
-=item -listcursor
+=item B<-listcursor>
 
 Sets the mouse cursor that is used over items in the list section
-(left side).  The default is set to Perl/Tk's 'hand2' cursor.  To use
-the OS's default cursor, set -listcursor => 'default'.
+(left side).  Default is Perl/Tk's C<hand2> cursor.  To use the OS's
+default cursor, set C<-listcursor =E<gt> 'default'>.
 
-=item -listfontsize
+=item B<-listfontsize>
 
-Sets the font size of the list text.  The default is set to 8.
+Sets the font size of the list text.  Default is C<8>.
 
-=item -listforeground
+=item B<-listforeground>
 
-Sets the color of the list text.  The default is set to the OS's
-default text color for Windows and black otherwise.
+Sets the color of the list text.  Default is the OS's default text
+color for Windows and C<black> otherwise.
 
-=item -listselectbackground
+=item B<-listselectbackground>
 
-Sets the background color of the selected list item.  The default is
-set to whatever -listbackground is.
+Sets the background color of the selected list item.  Default is
+whatever C<-listbackground> is set to.
 
-=item -listselectforeground
+=item B<-listselectforeground>
 
-Sets the color of the selected list item's text.  The default is set
-to blue.
+Sets the color of the selected list item's text.  Default is C<blue>.
 
-=item -listtype
+=item B<-listtype>
 
-Sets the type of listbox Help is to use, either HList or Tree.  The
-default is set to HList.
+Sets the type of listbox Help is to use, either HList or Tree.
+Default is C<HList>.
 
-=item -listwidth
+=item B<-listwidth>
 
-Sets the width of the list section of the help window.  The default
-is set to 25.
+Sets the width of the list section of the help window.  Default
+is C<25>.
 
-=item -resizable
+=item B<-resizable>
 
 Determines if the help window is resizable or not.  Takes a boolean
-value.  The default is set to 0.
+value.  The default is set to C<0>.
 
-=item -title
+=item B<-title>
 
-Sets the title on the top of the window.  The default is 'Help'.
+Sets the title on the top of the window.  Default is C<'Help'>.
 
-=item -variable
+=item B<-variable>
 
 The structure should be an array of arrayrefs of hashrefs.  The very
 first arrayref should contain only one hashref and this will be the
@@ -378,7 +377,7 @@ help
 
 =head1 AUTHOR
 
-Doug Gruber <doug@dougthug.com>
+Doug Gruber <dougthug@cpan.org>
 http://www.dougthug.com/
 
 =head1 COPYRIGHT

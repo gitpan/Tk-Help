@@ -1,7 +1,7 @@
 package Tk::Help;
 
 use vars qw($VERSION);
-$VERSION = "0.2";
+$VERSION = '0.3';
 
 use Tk qw(Ev);
 use Tk::widgets qw(HList ROText Tree);
@@ -10,7 +10,7 @@ use base qw(Tk::Toplevel);
 use strict;
 use warnings;
 
-Construct Tk::Widget "Help";
+Construct Tk::Widget 'Help';
 
 my %components;
 my %options;
@@ -23,71 +23,75 @@ sub ClassInit {
 sub Populate {
 	my($self, $args) = @_;
 
-	$options{"detailsbackground"}		= delete $args->{-detailsbackground}	   || "white";
-	$options{"detailsborderwidth"}		= delete $args->{-detailsborderwidth}	   || 10;
-	$options{"detailsfontsize"}			= delete $args->{-detailsfontsize}		   || 8;
-	$options{"detailsforeground"}		= delete $args->{-detailsforeground}	   || (($^O eq "MSWin32") ? "SystemWindowText" : "black");
-	$options{"detailsheaderfontsize"}	= delete $args->{-detailsheaderfontsize}   || 9;
-	$options{"detailsheaderforeground"} = delete $args->{-detailsheaderforeground} || (($^O eq "MSWin32") ? "SystemWindowText" : "black");
-	$options{"detailsmenu"}				= delete $args->{-detailsmenu}			   || 0;
-	$options{"detailswidth"}			= delete $args->{-detailswidth}			   || 40;
-	$options{"height"}					= delete $args->{-height}				   || (($^O eq "MSWin32") ? 30 : 40);
-	$options{"icon"}					= delete $args->{-icon}					   || undef;
-	$options{"listbackground"}			= delete $args->{-listbackground}		   || Tk::NORMAL_BG;
-	$options{"listborderwidth"}			= delete $args->{-listborderwidth}		   || 0;
-	$options{"listcursor"}				= delete $args->{-listcursor}			   || "hand2";
-	$options{"listfontsize"}			= delete $args->{-listfontsize}			   || 8;
-	$options{"listforeground"}			= delete $args->{-listforeground}		   || (($^O eq "MSWin32") ? "SystemWindowText" : "black");
-	$options{"listselectbackground"}	= delete $args->{-listselectbackground}	   || $options{"listbackground"};
-	$options{"listselectforeground"}	= delete $args->{-listselectforeground}	   || "blue";
-	$options{"listtype"}				= delete $args->{-listtype}				   || "HList";
-	$options{"listwidth"}				= delete $args->{-listwidth}			   || 25;
-	$options{"resizable"}				= delete $args->{-resizable}			   || 0;
-	$options{"variable"}				= delete $args->{-variable}				   || undef;
+	$options{'globalfontfamily'}        = delete $args->{-globalfontfamily}        || undef;
+	$options{'detailsbackground'}		= delete $args->{-detailsbackground}	   || 'white';
+	$options{'detailsborderwidth'}		= delete $args->{-detailsborderwidth}	   || 10;
+	$options{'detailsfontfamily'}       = delete $args->{-detailsfontfamily}       || $options{'globalfontfamily'};
+	$options{'detailsfontsize'}			= delete $args->{-detailsfontsize}		   || 8;
+	$options{'detailsforeground'}		= delete $args->{-detailsforeground}	   || (($^O eq 'MSWin32') ? 'SystemWindowText' : 'black');
+	$options{'detailsheaderfontfamily'} = delete $args->{-detailsheaderfontfamily} || $options{'globalfontfamily'};
+	$options{'detailsheaderfontsize'}	= delete $args->{-detailsheaderfontsize}   || 9;
+	$options{'detailsheaderforeground'} = delete $args->{-detailsheaderforeground} || (($^O eq 'MSWin32') ? 'SystemWindowText' : 'black');
+	$options{'detailsmenu'}				= delete $args->{-detailsmenu}			   || 0;
+	$options{'detailswidth'}			= delete $args->{-detailswidth}			   || 40;
+	$options{'height'}					= delete $args->{-height}				   || (($^O eq 'MSWin32') ? 30 : 40);
+	$options{'icon'}					= delete $args->{-icon}					   || undef;
+	$options{'listbackground'}			= delete $args->{-listbackground}		   || Tk::NORMAL_BG;
+	$options{'listborderwidth'}			= delete $args->{-listborderwidth}		   || 0;
+	$options{'listcursor'}				= delete $args->{-listcursor}			   || 'hand2';
+	$options{'listfontfamily'}          = delete $args->{-listfontfamily}          || $options{'globalfontfamily'};
+	$options{'listfontsize'}			= delete $args->{-listfontsize}			   || 8;
+	$options{'listforeground'}			= delete $args->{-listforeground}		   || (($^O eq 'MSWin32') ? 'SystemWindowText' : 'black');
+	$options{'listselectbackground'}	= delete $args->{-listselectbackground}	   || $options{'listbackground'};
+	$options{'listselectforeground'}	= delete $args->{-listselectforeground}	   || 'blue';
+	$options{'listtype'}				= delete $args->{-listtype}				   || 'HList';
+	$options{'listwidth'}				= delete $args->{-listwidth}			   || 25;
+	$options{'resizable'}				= delete $args->{-resizable}			   || 0;
+	$options{'variable'}				= delete $args->{-variable}				   || undef;
 
 	$self->SUPER::Populate($args);
 	$self->ConfigSpecs();
 
 	# sets the icon if specified
-	if($options{"icon"}) {
-		$self->iconimage(${$options{"icon"}});
+	if($options{'icon'}) {
+		$self->iconimage(${$options{'icon'}});
 	}
 	# turns off resizeing
-	unless($options{"resizable"}) {
+	unless($options{'resizable'}) {
 		$self->resizable(0, 0);
 	}
 	# sets the cursor to the os default instead of hand2
-	if($options{"listcursor"} eq "default") {
-		$options{"listcursor"} = undef;
+	if($options{'listcursor'} eq 'default') {
+		$options{'listcursor'} = undef;
 	}
 
 	# begin building the frames for the entire help system
 	# one main frame to contain the other two frames, list and details
-	$components{"main"} = $self->Component("Frame", "main");
-	$components{"main"}->grid();
-	$components{"listframe"} = $components{"main"}->Frame(-background  => $options{"listbackground"},
-														  -borderwidth => $options{"listborderwidth"})->grid(($components{"detailsframe"} = $components{"main"}->Frame(-background  => $options{"detailsbackground"},
-														  																											   -borderwidth => $options{"detailsborderwidth"})), -sticky => "nsew");
+	$components{'main'} = $self->Component('Frame', 'main');
+	$components{'main'}->grid();
+	$components{'listframe'} = $components{'main'}->Frame(-background  => $options{'listbackground'},
+														  -borderwidth => $options{'listborderwidth'})->grid(($components{'detailsframe'} = $components{'main'}->Frame(-background  => $options{'detailsbackground'},
+														  																											   -borderwidth => $options{'detailsborderwidth'})), -sticky => 'nsew');
 
 	# create the list
-	$components{"list"} = $components{"listframe"}->Scrolled($options{"listtype"},
-															 -background		 => $options{"listbackground"},
+	$components{'list'} = $components{'listframe'}->Scrolled($options{'listtype'},
+															 -background		 => $options{'listbackground'},
 															 -borderwidth		 => 0,
 															 -browsecmd			 => sub{&populatedetails},
-															 -cursor			 => $options{"listcursor"},
-															 -font				 => [-size => $options{"listfontsize"}],
-															 -foreground		 => $options{"listforeground"},
-															 -height			 => $options{"height"},
+															 -cursor			 => $options{'listcursor'},
+															 -font				 => [-family => $options{'listfontfamily'}, -size => $options{'listfontsize'}],
+															 -foreground		 => $options{'listforeground'},
+															 -height			 => $options{'height'},
 															 -highlightthickness => 0,
-															 -relief			 => "flat",
+															 -relief			 => 'flat',
 															 -scrollbars		 => 'osoe',
-															 -selectbackground	 => $options{"listselectbackground"},
+															 -selectbackground	 => $options{'listselectbackground'},
 															 -selectborderwidth	 => 0,
-															 -selectforeground	 => $options{"listselectforeground"},
-															 -width				 => $options{"listwidth"})->grid();
+															 -selectforeground	 => $options{'listselectforeground'},
+															 -width				 => $options{'listwidth'})->grid();
 
 	# assign a references to our hash to a scalar to simplify the iteration syntax
-	my $helptext = \@{$options{"variable"}};
+	my $helptext = \@{$options{'variable'}};
 	# iterate through the array
 	for(my $i = 0; $i < @$helptext; $i++) {
 		# iterate through the arrayrefs
@@ -97,50 +101,51 @@ sub Populate {
 				# if this isn't the first arrayref...
 				if($n) {
 					# insert the title in the list
-					$components{"list"}->add("0.".$i."0.".$n,
-											 -text => $$helptext[$i]->[$n]->{"-title"});
+					$components{'list'}->add('0.'.$i.'0.'.$n,
+											 -text => $$helptext[$i]->[$n]->{'-title'});
 				# if this is the first arrayref...
 				} else {
 					# insert the title in the list
-					$components{"list"}->add("0.".$i.$n,
-											 -text => $$helptext[$i]->[$n]->{"-title"});
+					$components{'list'}->add('0.'.$i.$n,
+											 -text => $$helptext[$i]->[$n]->{'-title'});
 				}
 			# if this is the first arrayref in the array...
 			} else {
 				# insert the title in the list
-				$components{"list"}->add($i,
-										 -text => $$helptext[$i]->[$n]->{"-title"});
+				$components{'list'}->add($i,
+										 -text => $$helptext[$i]->[$n]->{'-title'});
 			}
 		}
 	}
 
 	# this is needed for the indicators to be created when using Tk::Tree
-	if($options{"listtype"} eq "Tree") {
-		$components{"list"}->autosetmode();
+	if($options{'listtype'} eq 'Tree') {
+		$components{'list'}->autosetmode();
 	}
 
 	# create the details
-	$components{"detailstext"} = $components{"detailsframe"}->Scrolled("ROText",
-																	   -background => $options{"detailsbackground"},
-																	   -font	   => [-size => $options{"detailsfontsize"}],
-																	   -foreground => $options{"detailsforeground"},
-																	   -height	   => $options{"height"},
-																	   -relief	   => "flat",
+	$components{'detailstext'} = $components{'detailsframe'}->Scrolled('ROText',
+																	   -background => $options{'detailsbackground'},
+																	   -font	   => [-family => $options{'detailsfontfamily'}, -size => $options{'detailsfontsize'}],
+																	   -foreground => $options{'detailsforeground'},
+																	   -height	   => $options{'height'},
+																	   -relief	   => 'flat',
 																	   -scrollbars => 'oe',
-																	   -width	   => $options{"detailswidth"},
-																	   -wrap	   => "word")->grid();
+																	   -width	   => $options{'detailswidth'},
+																	   -wrap	   => 'word')->grid();
+
 	# turn off the right-click menu in the ROText object
-	unless($options{"detailsmenu"}) {
-		$components{"detailstext"}->menu(undef);
+	unless($options{'detailsmenu'}) {
+		$components{'detailstext'}->menu(undef);
 	}
 	# create the tag for the details headers
-	$components{"detailstext"}->tagConfigure("header",
-											 -font		 => [-size => $options{"detailsheaderfontsize"}, -weight => "bold"],
-											 -foreground => $options{"detailsheaderforeground"});
+	$components{'detailstext'}->tagConfigure('header',
+											 -font		 => [-family => $options{'detailsheaderfontfamily'}, -size => $options{'detailsheaderfontsize'}, -weight => 'bold'],
+											 -foreground => $options{'detailsheaderforeground'});
 	# insert the header into the details frame
-	$components{"detailstext"}->insert("end", $$helptext[0]->[0]->{"-header"}."\n\n", "header");
+	$components{'detailstext'}->insert('end', $$helptext[0]->[0]->{'-header'}."\n\n", 'header');
 	# insert the text into the details frame
-	$components{"detailstext"}->insert("end", $$helptext[0]->[0]->{"-text"});
+	$components{'detailstext'}->insert('end', $$helptext[0]->[0]->{'-text'});
 
 	# bring the help window into focus
 	$self->focusForce();
@@ -149,7 +154,7 @@ sub Populate {
 sub populatedetails {
 	my $number	  = shift();
 	my $intnumber = 0;
-	my $helptext  = \%{$options{"variable"}};
+	my $helptext  = \@{$options{'variable'}};
 
 	if($number =~ m/^0\.(\d)\d\.(\d+)/) {
 		$number = $1;
@@ -158,10 +163,10 @@ sub populatedetails {
 		$number = $1;
 	}
 	# remove all the existing text from the details frame
-	$components{"detailstext"}->delete("1.0", "end");
+	$components{'detailstext'}->delete('1.0', 'end');
 	# insert the header and text for the listitem that was clicked
-	$components{"detailstext"}->insert("end", $$helptext[$number]->[$intnumber]->{"-header"}."\n\n", "header");
-	$components{"detailstext"}->insert("end", $$helptext[$number]->[$intnumber]->{"-text"});
+	$components{'detailstext'}->insert('end', $$helptext[$number]->[$intnumber]->{'-header'}."\n\n", 'header');
+	$components{'detailstext'}->insert('end', $$helptext[$number]->[$intnumber]->{'-text'});
 }
 
 1;
@@ -191,6 +196,10 @@ the array with their help content.
 =head1 OPTIONS
 
 =over 4
+
+=item B<-globalfontfamily>
+
+Set the font family for all text in the Help widget.
 
 =item B<-detailsbackground>
 
@@ -355,16 +364,11 @@ This is required and there is no default.
                                -variable => \@helparray);
     }
 
-=head1 NOTES
-
-This structure of the array is very particular.  This could change
-in future versions where it becomes more flexible, but right now it
-is safest to follow the example closely.  Sorry ;).
-
 =head1 TODO
 
-Bind mouse events to the list items to create a mouseover and mouseout effect.
-Figure out how to remove the dashed line around a selected item in the list.
+- Bind mouse events to the list items to create a mouseover and mouseout effect.
+- Figure out how to remove the dashed line around a selected item in the list.
+- Add individual font family switches for each text group.
 
 =head1 SEE ALSO
 
@@ -382,6 +386,6 @@ http://www.dougthug.com/
 
 =head1 COPYRIGHT
 
-Copyright (c) 2004 Doug Gruber.  All rights reserved.  This module is
+Copyright (c) 2005 Doug Gruber.  All rights reserved.  This module is
 free software; you can redistribute it and/or modify it under the
 same terms as Perl itself.

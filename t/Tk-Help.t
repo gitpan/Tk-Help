@@ -7,7 +7,7 @@ use warnings;
 use Tk;
 use Tk::Help;
 
-my @helphash = ([{-title  => "Test Help",
+my @helparray = ([{-title  => "Test Help",
 				  -header => "My Test Help",
 				  -text	  => "Test help description."}],
 				[{-title  => "Section 1",
@@ -32,6 +32,6 @@ my @helphash = ([{-title  => "Test Help",
 my $main = MainWindow->new();
 
 my $help = $main->Help(-title	 => "Test Help",
-					   -variable => \@helphash);
+					   -variable => \@helparray);
 
 ok($help->class eq "Help", "Verify creation of help");

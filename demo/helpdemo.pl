@@ -23,6 +23,7 @@ $helpmenu->command(-label	=> "~Help Contents",
 				   -command => sub{showhelp()});
 
 MainLoop;
+
 1;
 
 sub showhelp {
